@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/blog/Navbar";
 
 const inter = Inter({ subsets: ["latin-ext"] });
 
 export const metadata: Metadata = {
-  title: "Rimdasilva Blog",
-  description: "Rimdasilva Blog",
-  viewport: "width=device-width, initial-scale=1.0",
+  title: "Đăng nhập",
+  description: "Rimdasilva Blog - Đăng nhập",
+  viewport: "width=device-width, initial-scale=1.0", // Thêm meta viewport tại đây
 };
 
 export default function RootLayout({
@@ -18,10 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <main>{children}</main>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

@@ -23,12 +23,6 @@
   src: url("../../public//font//Rubik-Regular.ttf");
 }
 
-@layer base {
-  body {
-    @apply bg-[#171717] transition-all ease-in duration-200;
-  }
-}
-
 /* @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;
@@ -61,4 +55,132 @@
   100% {
     background-position: 1080px;
   }
+}
+
+/* Định nghĩa class global cho tiêu đề */
+.title-hover {
+  @apply font-bold relative inline-block transition-colors duration-300;
+}
+
+.title-hover-2 {
+  @apply font-bold text-gray-800 relative inline-block transition-colors duration-300;
+}
+
+.title-hover:hover,
+.title-hover-2:hover {
+  @apply text-blue-500;
+}
+
+.title-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0.1px;
+  background-color: #2563eb; /* Màu xanh Tailwind: blue-600 */
+  transition: width 0.3s ease;
+}
+
+.title-hover:hover::after {
+  width: 100%;
+}
+/* custom-styles.css */
+.container-rds {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (min-width: 480px) {
+  .container-rds {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+@media (min-width: 640px) {
+  .container-rds {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-rds {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-rds {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-rds {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container-rds {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container-rds {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+/* globals.css */
+.continue-reading {
+  color: #7e22ce;
+  text-decoration: underline;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.continue-reading:hover {
+  color: #2563eb; /* Màu xanh đậm hơn (hover effect) */
+  text-decoration: underline; /* Đảm bảo đường gạch chân khi hover */
+}
+
+.continue-reading:focus {
+  outline: none; /* Xóa đường viền khi phần tử được focus */
+}
+
+/* Dành cho các trình duyệt dựa trên Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Độ rộng của thanh cuộn */
+  height: 8px; /* Độ cao của thanh cuộn ngang */
+}
+
+/* Đường viền của thanh cuộn */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền của track */
+  border-radius: 10px; /* Làm tròn các góc */
+}
+
+/* Màu của phần thanh cuộn (thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: #1e90ff; /* Màu xanh nước biển */
+  border-radius: 10px; /* Làm tròn các góc */
+  border: 2px solid #f1f1f1; /* Thêm một viền nhẹ */
+}
+
+/* Thanh cuộn khi hover (di chuột vào thanh cuộn) */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4682b4; /* Màu đậm hơn khi hover */
 }
