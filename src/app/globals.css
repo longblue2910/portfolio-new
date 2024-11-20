@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "prismjs/themes/prism-okaidia.css";
 @font-face {
   font-family: RubikBold;
   src: url("../../public//font//Rubik-Bold.ttf");
