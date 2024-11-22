@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Import dynamic cho ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
+import { ApiResponse } from "@/lib/common";
 
 interface Category {
   id: string;
@@ -30,6 +31,7 @@ const CreatePost = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     title: "",
+    descriptionShort: "",
     description: "",
     slug: "",
     categoryIds: [] as string[],
@@ -42,14 +44,16 @@ const CreatePost = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get<Category[]>(
+        const { data } = await axios.get<ApiResponse<Category[]>>(
           "http://blog-api.rimdasilva.com/api/category?size=10&api-version=1.0"
         );
-        setCategories(res.data);
+
+        setCategories(data.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
     };
+
     fetchCategories();
   }, []);
 
@@ -74,6 +78,7 @@ const CreatePost = () => {
     try {
       const submitData = new FormData();
       submitData.append("Title", formData.title);
+      submitData.append("DescriptionShort", formData.descriptionShort);
       submitData.append("Description", formData.description);
       submitData.append("Slug", formData.slug);
       submitData.append("ImageFile", image as Blob);
@@ -115,7 +120,7 @@ const CreatePost = () => {
         {/* Title */}
         <TextField
           fullWidth
-          label="Title"
+          label="Tiêu đề"
           name="title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -124,9 +129,20 @@ const CreatePost = () => {
           margin="normal"
         />
 
+        <TextField
+          fullWidth
+          label="Mô tả ngắn"
+          name="descriptionShort"
+          value={formData.descriptionShort}
+          onChange={(e) =>
+            setFormData({ ...formData, descriptionShort: e.target.value })
+          }
+          margin="normal"
+        />
+
         {/* Description */}
         <Box sx={{ my: 2 }}>
-          <Typography variant="subtitle1">Description</Typography>
+          <Typography variant="subtitle1">Chi tiết</Typography>
           <ReactQuill
             value={formData.description}
             onChange={(value) =>
@@ -143,7 +159,7 @@ const CreatePost = () => {
         {/* Slug */}
         <TextField
           fullWidth
-          label="Slug"
+          label="Đường dẫn"
           name="slug"
           value={formData.slug}
           onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
@@ -158,7 +174,7 @@ const CreatePost = () => {
           margin="normal"
           error={Boolean(errors.categoryIds)}
         >
-          <InputLabel id="category-select-label">Categories</InputLabel>
+          <InputLabel id="category-select-label">Thể loại</InputLabel>
           <Select
             multiple
             value={formData.categoryIds}

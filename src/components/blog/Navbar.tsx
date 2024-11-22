@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { FiSearch, FiBell, FiUser, FiX, FiMenu } from "react-icons/fi";
 import { debounce } from "lodash"; // Import lodash.debounce
 import Link from "next/link";
+import { Divider } from "@mui/material";
 
 interface Post {
   id: string;
@@ -113,7 +114,7 @@ const Navbar: React.FC = () => {
         {/* Phần center */}
         <div className="text-xl font-extrabold text-gray-900">RimdaSilva</div>
         {/* Phần right */}
-        <div>
+        <div className="hidden md:block">
           <button className="flex items-center gap-2 text-sm text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-md transition">
             <FiUser size={18} />
             <Link href="/login">Login</Link>
@@ -122,16 +123,24 @@ const Navbar: React.FC = () => {
       </div>
       {/* Phần dưới */}
       <div className=" items-center hidden md:flex justify-center py-2">
-        {["News", "Series", ".NET", "SQL", "Devops", "Azure"].map(
-          (category) => (
-            <div
-              key={category}
-              className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover"
-            >
-              {category}
-            </div>
-          )
-        )}
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          News
+        </div>
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          Series
+        </div>
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          NET
+        </div>
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          SQL
+        </div>
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          Devops
+        </div>
+        <div className="mx-4 px-1 py-1 cursor-pointer text-gray-500 font-semibold text-sm title-hover">
+          Azure
+        </div>
       </div>
 
       {/* Phần menu bên phải chỉ hiển thị dưới màn hình md */}
@@ -155,18 +164,33 @@ const Navbar: React.FC = () => {
             </button>
             <div className="space-y-6 mt-10">
               <div className="text-2xl font-semibold text-gray-800">Menu</div>
-              <ul className="space-y-4">
-                {["News", "Series", ".NET", "SQL", "Devops", "Azure"].map(
-                  (category) => (
-                    <li
-                      key={category}
-                      className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2"
-                    >
-                      {category}
-                    </li>
-                  )
-                )}
-              </ul>
+              <div className="space-y-3">
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  News
+                </p>
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  Series
+                </p>
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  NET
+                </p>
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  SQL
+                </p>
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  Devops
+                </p>
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  Azure
+                </p>
+                <Divider />
+                <p className="cursor-pointer text-gray-700 hover:text-blue-500 transition duration-300 hover:pl-2">
+                  <button className="flex items-center gap-2 text-sm text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-md transition">
+                    <FiUser size={18} />
+                    <Link href="/login">Login</Link>
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
