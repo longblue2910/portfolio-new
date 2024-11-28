@@ -1,33 +1,39 @@
-import Link from "next/link";
-import React from "react";
-import ContinueReading from "./ContinueReading";
-import Tag from "./Tag";
+"use client";
 
-const Post = () => {
+import Link from "next/link";
+import Tag from "./Tag";
+import ContinueReading from "./ContinueReading";
+import { formatDate } from "@/lib/dateUtils";
+
+interface PostProps {
+  title: string;
+  date: string;
+  description: string;
+  link: string;
+}
+
+const Post: React.FC<PostProps> = ({ title, date, description, link }) => {
   return (
     <div className="mb-3">
       {/* Header */}
-      <div className="flex gap-3 sm:gap-5 mt-3 items-center">
+      <div className="flex gap-3 sm:gap-5 mt-3  items-center">
         <Tag tag=".NET" />
-        <p className="text-xs sm:text-sm font-semibold text-gray-500">
-          April 16, 2022
-        </p>
+        <div className="text-xs font-semibold text-gray-500">
+          <span>{formatDate(date)}</span>
+        </div>
       </div>
 
       {/* Title */}
       <h1 className="font-bold text-lg sm:text-xl mt-2">
-        <Link href="/" className="title-hover-2 text-lg sm:text-xl">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint, qui.
+        <Link href={link} className="title-hover-2 text-lg sm:text-xl">
+          {title}
         </Link>
       </h1>
 
-      <p className="text-gray-600 text-sm mt-1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, tempora
-        excepturi neque eveniet porro distinctio ex cum animi deleniti ipsum.
-      </p>
+      <p className="text-gray-600 text-sm mt-1">{description}</p>
 
       {/* Continue Reading */}
-      <ContinueReading link="#" />
+      <ContinueReading link={link} />
     </div>
   );
 };

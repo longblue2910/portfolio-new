@@ -8,6 +8,8 @@ import "../../../../public/css/prism-coldark-dark.css";
 import { formatDate } from "@/lib/dateUtils";
 import Avatar from "@mui/material/Avatar";
 import { RiFacebookLine } from "react-icons/ri";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const decodeHtml = (html: string) => {
   const txt = document.createElement("textarea");
@@ -39,8 +41,8 @@ const ClientPostContent = ({ post }: { post: Post }) => {
     const container = document.createElement("div");
     container.innerHTML = decodedDescription;
 
-    // Lấy tất cả các thẻ <h1>
-    const headings = container.querySelectorAll("h1");
+    // Lấy tất cả các thẻ <h2>
+    const headings = container.querySelectorAll("h2");
     headings.forEach((heading) => {
       const headingText = heading.textContent || "";
       const id = headingText.toLowerCase().replace(/\s+/g, "-");
@@ -61,20 +63,27 @@ const ClientPostContent = ({ post }: { post: Post }) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-    alert("Link bài viết đã được sao chép!");
+    toast.success("Link bài viết đã được sao chép!");
   };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      const elementTop = element.getBoundingClientRect().top;
+      const offset = 105; // Chiều cao của navbar
+      window.scrollBy({
+        top: elementTop - offset, // Cuộn về phía phần tử, nhưng giảm đi chiều cao của navbar
+        behavior: "smooth",
+      });
     }
   };
 
   return (
-    <div className="container-rds mx-auto p-4 md:flex md:gap-6 mt-[150px]">
+    <div className="container-rds bg-white rounded-lg mx-auto p-4 md:flex md:gap-6 mt-[150px]">
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={3000} />
       {/* Bên trái: Nội dung bài viết */}
-      <div className="lg:w-3/4 lg:px-2">
+      <div className="lg:w-3/4">
         <h1 className="text-4xl font-bold text-center mb-6 text-primary leading-tight md:text-5xl">
           {post.title}
         </h1>
@@ -97,12 +106,12 @@ const ClientPostContent = ({ post }: { post: Post }) => {
             >
               <FaCopy />
             </button>
-            <button
+            {/* <button
               className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
               title="Share to Facebook"
             >
               <RiFacebookLine />
-            </button>
+            </button> */}
           </div>
         </div>
 

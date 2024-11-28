@@ -17,7 +17,7 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Import dynamic cho ReactQuill
+// Import dynamic for ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 import { ApiResponse } from "@/lib/common";
@@ -27,7 +27,7 @@ interface Category {
   title: string;
 }
 
-const CreatePost = () => {
+const EditPost = ({ postId }: { postId: string }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -40,22 +40,41 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Fetch danh mục
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get<ApiResponse<Category[]>>(
           "http://blog-api.rimdasilva.com/api/category?size=10&api-version=1.0"
         );
-
         setCategories(data.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
     };
-
     fetchCategories();
   }, []);
+
+  // Fetch post details when postId changes
+  useEffect(() => {
+    const fetchPostDetails = async () => {
+      try {
+        const { data } = await axios.get<ApiResponse<any>>(
+          `http://blog-api.rimdasilva.com/api/post/${postId}?api-version=1.0`
+        );
+        setFormData({
+          title: data.data.title,
+          descriptionShort: data.data.descriptionShort,
+          description: data.data.description,
+          slug: data.data.slug,
+          categoryIds: data.data.categoryIds || [],
+        });
+      } catch (err) {
+        console.error("Error fetching post details:", err);
+      }
+    };
+    fetchPostDetails();
+  }, [postId]);
 
   const validate = () => {
     const tempErrors: { [key: string]: string } = {};
@@ -97,12 +116,11 @@ const CreatePost = () => {
         }
       );
 
-      // Hiển thị thông báo thành công
-      toast.success("Post created successfully!");
+      toast.success("Post updated successfully!");
       console.log("API Response:", res.data);
     } catch (err) {
-      console.error("Error creating post:", err);
-      toast.error("Failed to create post.");
+      console.error("Error updating post:", err);
+      toast.error("Failed to update post.");
     } finally {
       setLoading(false);
     }
@@ -110,17 +128,16 @@ const CreatePost = () => {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 4, marginTop: "200px" }}>
-      {/* Toast Container */}
       <ToastContainer position="top-right" autoClose={3000} />
 
       <Typography variant="h4" gutterBottom>
-        Tạo mới bài viết
+        Edit Post
       </Typography>
       <form onSubmit={handleSubmit}>
         {/* Title */}
         <TextField
           fullWidth
-          label="Tiêu đề"
+          label="Title"
           name="title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -131,7 +148,7 @@ const CreatePost = () => {
 
         <TextField
           fullWidth
-          label="Mô tả ngắn"
+          label="Short Description"
           name="descriptionShort"
           value={formData.descriptionShort}
           onChange={(e) =>
@@ -142,7 +159,7 @@ const CreatePost = () => {
 
         {/* Description */}
         <Box sx={{ my: 2 }}>
-          <Typography variant="subtitle1">Chi tiết</Typography>
+          <Typography variant="subtitle1">Detailed Description</Typography>
           <ReactQuill
             value={formData.description}
             onChange={(value) =>
@@ -159,7 +176,7 @@ const CreatePost = () => {
         {/* Slug */}
         <TextField
           fullWidth
-          label="Đường dẫn"
+          label="Slug"
           name="slug"
           value={formData.slug}
           onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
@@ -174,7 +191,7 @@ const CreatePost = () => {
           margin="normal"
           error={Boolean(errors.categoryIds)}
         >
-          <InputLabel id="category-select-label">Thể loại</InputLabel>
+          <InputLabel id="category-select-label">Category</InputLabel>
           <Select
             multiple
             value={formData.categoryIds}
@@ -237,4 +254,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;
